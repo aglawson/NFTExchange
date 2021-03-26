@@ -2,6 +2,7 @@ Moralis.initialize("");
 Moralis.serverURL = ''
 
 init = async () => {
+    hideElement(createItemForm);
     hideElement(userInfo);
     window.web3 = await Moralis.Web3.enable();
     initUser();
@@ -11,7 +12,9 @@ initUser = async () => {
     if (await Moralis.User.current()) {
         hideElement(userConnectButton);
         showElement(userProfileButton);
+        showElement(openCreateItemButton);
     }else {
+        hideElement(openCreateItemButton);
         showElement(userConnectButton);
         hideElement(userProfileButton);
     }
@@ -82,11 +85,13 @@ userConnectButton.onclick = login;
 const userProfileButton = document.getElementById("btnUserInfo");
 userProfileButton.onclick = openUserInfo;
 
+//User Info Form
 const userInfo = document.getElementById("userInfo");
 const userClose = document.getElementById("btnCloseUserInfo");
 userClose.onclick = () => hideElement(userInfo);
 const userLogout = document.getElementById("btnLogout");
 userLogout.onclick = logout;
+//User Info Fields
 const userUsernameField = document.getElementById("txtUsername");
 const userEmailField = document.getElementById("txtEmail");
 const userAvatarImg = document.getElementById("imgAvatar");
@@ -95,6 +100,20 @@ const userAvatarFile = document.getElementById("fileAvatar");
 const userSaveButton = document.getElementById("btnSaveUserInfo");
 userSaveButton.onclick = saveUserInfo;
 
+//Create Item Form
+const createItemForm = document.getElementById("createItem");
+const openCreateItemButton = document.getElementById("btnOpenCreateItem");
+openCreateItemButton.onclick = () => showElement(createItemForm);
+
+const closeCreateItem = document.getElementById("btnCloseCreateItem");
+closeCreateItem.onclick = () => hideElement(createItemForm);
+
+//Create Item Fields
+const createItemNameField = document.getElementById("txtCreateItemName");
+const createItemDescriptionField = document.getElementById("txtCreateItemDescription");
+const createItemPriceField = document.getElementById("numCreateItemPrice");
+const createItemStatusField = document.getElementById("selectCreateItemStatus");
+const createItemFile = document.getElementById("fileCreateItemFile");
 
 
 init();
