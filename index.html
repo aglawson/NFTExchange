@@ -12,6 +12,8 @@
     <div>
         <button id="btnConnect">Connect Wallet</button>
         <button id="btnUserInfo">Profile</button>
+        <button id="btnOpenCreateItem">Create Item</button>
+
     </div>
 
     <div id="userInfo">
@@ -28,6 +30,27 @@
         <button id="btnCloseUserInfo">Close</button>
         <button id="btnSaveUserInfo">Save</button>
     </div>
+
+    <div id="createItem">
+        <h4>Create Item</h4>
+        <input type="text" id="txtCreateItemName" required placeholder ="Enter Item Name">
+        <textarea id="txtCreateItemDescription" cols="30" rows="5" placeholder="Enter Description"></textarea>
+        <input type="number" min="1" step="1" id="numCreateItemPrice" placeholder="Enter Price" required>
+        <label for="selectCreateItemStatus">Status</label>
+        <select id="selectCreateItemStatus">
+            <optgroup value="0">Not for sale</optgroup>
+            <optgroup value="1">Instant buy</optgroup>
+            <optgroup value="2">Accept offers</optgroup>
+        </select>
+
+        <label for="fileCreateItemFile">Select Item File</label>
+        <img width="50" height="50" src="" id="fileCreateItemFile" alt="">
+        <input type="file" id="fileAvatar">
+
+        <button id="btnCloseCreateItem">Close</button>
+        <button id="btnCreateItem">Create!</button>
+    </div>
+
     <script src="main.js"></script>
 
 </body>
