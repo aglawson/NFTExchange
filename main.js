@@ -1,5 +1,6 @@
 Moralis.initialize("");
 Moralis.serverURL = ''
+const TOKEN_CONTRACT_ADDRESS = "0x2e18c551E447cDe714e7E62cac6c0099c790176A";
 
 init = async () => {
     hideElement(createItemForm);
@@ -77,9 +78,55 @@ saveUserInfo = async () => {
     openUserInfo();
 }
 
+createItem = async () => {
+    alert("calling create item function");
+    if(createItemFile.files.length == 0){
+        alert("Please select a file.");
+        return;
+    } else if(createItemNameField.value.length == 0){
+        alert("Please give item a name.");
+        return;
+    }
+
+    const data = createItemFile.files[0];
+    const nftFile = new Moralis.File(data.name, data);
+    console.log(nftFile);
+    await nftFile.saveIPFS();
+
+    const nftFilePath = nftFile.ipfs();
+    const nftFileHash = nftFile.hash();
+
+    const metadata = {
+        name: createItemNameField.value,
+        description: createItemDescriptionField.value,
+        nftFilePath: nftFilePath,
+        nftFileHash: nftFileHash
+    };
+
+    const nftFileMetadataFile = new Moralis.File("metadata.json", {base64 : btoa(JSON.stringify(metadata))});
+    await nftFileMetadataFile.saveIPFS();
+
+    const nftFileMetadataFilePath = nftFileMetadataFile.ipfs();
+    const nftFileMetadataFileHash = nftFileMetadataFile.hash();
+
+    const Item = Moralis.Object.extend("Item");
+    const item = new Item();
+    item.set('name', createItemNameField.value);
+    item.set('description', createItemDescriptionField.value);
+    item.set('nftFilePath', nftFilePath);
+    item.set('nftFileHash', nftFileHash);
+    item.set('MetadataFilePath', nftFileMetadataFilePath);
+    item.set('MetadataFileHash', nftFileMetadataFileHash);
+
+    await item.save();
+    console.log(item);
+
+}
+
 hideElement = (element) => element.style.display = "none";
 showElement = (element) => element.style.display = "block";
 
+// Navbar
 const userConnectButton = document.getElementById("btnConnect");
 userConnectButton.onclick = login;
 const userProfileButton = document.getElementById("btnUserInfo");
@@ -114,6 +161,6 @@ const createItemDescriptionField = document.getElementById("txtCreateItemDescrip
 const createItemPriceField = document.getElementById("numCreateItemPrice");
 const createItemStatusField = document.getElementById("selectCreateItemStatus");
 const createItemFile = document.getElementById("fileCreateItemFile");
-
+document.getElementById("btnCreateItem").onclick = createItem;
 
 init();
