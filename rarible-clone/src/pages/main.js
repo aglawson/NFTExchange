@@ -1,3 +1,5 @@
+import * as React from "react"
+
 Moralis.initialize("AdEIwBVQF3IB6TpjoyZidRasNgLuyGAzdfJJdLOT");
 Moralis.serverURL = 'https://oo3xsmnesgip.moralis.io:2053/server'
 const TOKEN_CONTRACT_ADDRESS = "0x2e18c551E447cDe714e7E62cac6c0099c790176A";
@@ -164,3 +166,5 @@ const createItemFile = document.getElementById("fileCreateItemFile");
 document.getElementById("btnCreateItem").onclick = createItem;
 
 init();
+
+export default init
