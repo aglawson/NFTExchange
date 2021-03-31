@@ -151,6 +151,7 @@ loadUserItems = async () => {
     ownedItems.forEach(item => {
         getAndRenderItemData(item, renderUserItem);
     });
+    console.log(ownedItems);
 }
 
 initTemplate = (id) => {
