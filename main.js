@@ -9,7 +9,6 @@ init = async () => {
     window.web3 = await Moralis.Web3.enable();
     window.tokenContract = new web3.eth.Contract(tokenContractAbi, TOKEN_CONTRACT_ADDRESS);
     initUser();
-    loadUserItems();
 }
 
 initUser = async () => {
@@ -18,6 +17,7 @@ initUser = async () => {
         showElement(userProfileButton);
         showElement(openCreateItemButton);
         showElement(openUserItemsButton);
+        loadUserItems();
     }else {
         hideElement(openCreateItemButton);
         showElement(userConnectButton);
@@ -148,9 +148,38 @@ openUserItems = async () => {
 
 loadUserItems = async () => {
     const ownedItems = await Moralis.Cloud.run("getUserItems");
-    console.log(await ownedItems);
+    ownedItems.forEach(item => {
+        getAndRenderItemData(item, renderUserItem);
+    });
 }
 
+initTemplate = (id) => {
+    const template = document.getElementById(id);
+    template.id = "";
+    template.parentNode.removeChild(template);
+    return template;
+}
+
+renderUserItem = (item) => {
+    const userItem = userItemTemplate.cloneNode(true);
+    userItem.getElementsByTagName("img")[0].src = item.image;
+    userItem.getElementsByTagName("img")[0].alt = item.name;
+    userItem.getElementsByTagName("h5")[0].innerText = item.name;
+    userItem.getElementsByTagName("p")[0].innerText = item.description;
+    
+    userItems.appendChild(userItem);
+}
+
+getAndRenderItemData = (item, renderFunction) => {
+    fetch(item.tokenUri)
+    .then(response => response.json())
+    .then(data => {
+        data.symbol = item.symbol;
+        data.tokenId = item.tokenId;
+        data.tokenAddress = item.tokenAddress;
+        renderFunction(data);
+    })
+}
 
 hideElement = (element) => element.style.display = "none";
 showElement = (element) => element.style.display = "block";
@@ -199,4 +228,8 @@ const userItems = document.getElementById("userItemsList");
 document.getElementById("btnCloseUserItems").onclick = () => hideElement(userItemsSection);
 const openUserItemsButton = document.getElementById("btnMyItems");
 openUserItemsButton.onclick = openUserItems;
+
+const userItemTemplate = initTemplate("itemTemplate");
+
+
 init();
