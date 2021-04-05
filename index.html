@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MoRarible</title>
     <script src="https://cdn.jsdelivr.net/npm/web3@1.3.3/dist/web3.min.js"></script>
+    <script src="https://unpkg.com/moralis@0.0.9/dist/moralis.js"></script>
     <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
 </head>
 <body>
@@ -38,9 +39,10 @@
         <input type="number" min="1" step="1" id="numCreateItemPrice" placeholder="Enter Price" required>
         <label for="selectCreateItemStatus">Status</label>
         <select id="selectCreateItemStatus">
-            <optgroup value="0">Not for sale</optgroup>
-            <optgroup value="1">Instant buy</optgroup>
-            <optgroup value="2">Accept offers</optgroup>
+            <option value="0">Not for sale</option>
+            <option value="1">Instant buy</option>
+            <option value="2">Accept offers</option>
+            
         </select>
 
         <label for="fileCreateItemFile">Select Item File</label>
@@ -57,10 +59,21 @@
         <button id="btnCloseUserItems">Close</button>
     </div>
 
+    <div id="itemsForSale"> </div>
+
     <div id="itemTemplate">
         <img src="" alt="">
         <h5></h5>
         <p></p>
+    </div>
+
+    <div id="marketplaceItemTemplate">
+        <img src="" alt="">
+        <h6></h6>
+        <img src="" alt="">
+        <h5></h5>
+        <p></p>
+        <button></button>
     </div>
 
     <script src="abi.js"></script>

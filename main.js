@@ -1,6 +1,7 @@
 Moralis.initialize("65Sp0XaKbuzcDeRBtpRCUkMfQ3ICogBxjbKIWiWP");
 Moralis.serverURL = 'https://uavkeiigq1dw.moralis.io:2053/server'
-const TOKEN_CONTRACT_ADDRESS = "0xA3384210527705238b63493309B894F2cB863835";
+const TOKEN_CONTRACT_ADDRESS = "0xb949ca81761ea58617dC92d7B52101bc5e4Da2E7";
+const MARKETPLACE_CONTRACT_ADDRESS = "0x9Dbf68f642D3604eF37222BDc414d47b93b48F0d";
 
 init = async () => {
     hideElement(createItemForm);
@@ -8,7 +9,10 @@ init = async () => {
     hideElement(userItemsSection);
     window.web3 = await Moralis.Web3.enable();
     window.tokenContract = new web3.eth.Contract(tokenContractAbi, TOKEN_CONTRACT_ADDRESS);
+    window.marketplaceContract = new web3.eth.Contract(marketplaceContractAbi, MARKETPLACE_CONTRACT_ADDRESS);
+
     initUser();
+    loadItems();
 }
 
 initUser = async () => {
@@ -129,6 +133,20 @@ createItem = async () => {
     await item.save();
     console.log(item);
 
+    user = await Moralis.User.current();
+    const userAddress = user.get('ethAddress');
+
+    switch(createItemStatusField.value) {
+        case "0":
+            return;
+        case "1": 
+            await ensureMarketplaceIsApproved(nftId, TOKEN_CONTRACT_ADDRESS);
+            await marketplaceContract.methods.addItemToMarket(nftId, TOKEN_CONTRACT_ADDRESS, createItemPriceField.value).send({from: userAddress});
+            break;
+        case "2":
+            alert("Auction not yet supported, item has been minted");
+            return;
+    }
 }
 
 mintNft = async (metadataUrl) => {
@@ -151,7 +169,13 @@ loadUserItems = async () => {
     ownedItems.forEach(item => {
         getAndRenderItemData(item, renderUserItem);
     });
-    console.log(ownedItems);
+}
+
+loadItems = async () => {
+    const items = await Moralis.Cloud.run("getItems");
+    items.forEach(item => {
+        getAndRenderItemData(item, renderItem);
+    });
 }
 
 initTemplate = (id) => {
@@ -175,11 +199,37 @@ getAndRenderItemData = (item, renderFunction) => {
     fetch(item.tokenUri)
     .then(response => response.json())
     .then(data => {
-        data.symbol = item.symbol;
-        data.tokenId = item.tokenId;
-        data.tokenAddress = item.tokenAddress;
-        renderFunction(data);
+        item.name = data.name;
+        item.description = data.description;
+        item.image = data.image;
+        renderFunction(item);
     })
+}
+
+ensureMarketplaceIsApproved = async (tokenId, tokenAddress) => { 
+    user = await Moralis.User.current();
+    const userAddress = user.get('ethAddress');
+    const contract = new web3.eth.Contract(tokenContractAbi, tokenAddress);
+    const approvedAddress = await contract.methods.getApproved(tokenId).call({from: userAddress});
+    if(approvedAddress != MARKETPLACE_CONTRACT_ADDRESS){
+        await contract.methods.approve(MARKETPLACE_CONTRACT_ADDRESS, tokenId).send({from: userAddress});
+    }
+} 
+
+renderItem = (item) => {
+    const itemForsale = marketplaceItemTemplate.cloneNode(true);
+    if(item.avatar) {
+        itemForsale.getElementsByTagName("img")[0].src = item.sellerAvatar.url();
+        itemForsale.getElementsByTagName("img")[0].alt = item.sellerUsername;
+    }
+    itemForsale.getElementsByTagName("img")[1].src = item.image;
+    itemForsale.getElementsByTagName("img")[1].alt = item.name;
+    itemForsale.getElementsByTagName("h5")[0].innerText = item.name;
+    itemForsale.getElementsByTagName("p")[0].innerText = item.description;
+
+    itemForsale.getElementsByTagName("button")[0].innerText = `Buy for ${item.askingPrice}`;
+    itemForsale.id = `item-${item.uid}`;
+    itemsForsale.appendChild(itemForsale);
 }
 
 hideElement = (element) => element.style.display = "none";
@@ -231,6 +281,9 @@ const openUserItemsButton = document.getElementById("btnMyItems");
 openUserItemsButton.onclick = openUserItems;
 
 const userItemTemplate = initTemplate("itemTemplate");
+
+const itemsForSale = document.getElementById("itemsForSale");
+const marketplaceItemTemplate = initTemplate("marketplaceItemTemplate");
 
 
 init();
