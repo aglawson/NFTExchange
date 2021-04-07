@@ -1,8 +1,8 @@
 Moralis.initialize("65Sp0XaKbuzcDeRBtpRCUkMfQ3ICogBxjbKIWiWP");
 Moralis.serverURL = 'https://uavkeiigq1dw.moralis.io:2053/server'
-const TOKEN_CONTRACT_ADDRESS = "0xb949ca81761ea58617dC92d7B52101bc5e4Da2E7";
-const MARKETPLACE_CONTRACT_ADDRESS = "0x9Dbf68f642D3604eF37222BDc414d47b93b48F0d";
-
+const TOKEN_CONTRACT_ADDRESS = "0x849f1a62a51E84125EccB8ea02139ddc02835E07";
+const MARKETPLACE_CONTRACT_ADDRESS = "0x38C274A23D97B51F7cCB1747A1e8d991Ed8a4D27";
+const STORAGE_CONTRACT_ADDRESS = "0x1218353a6b9ae2a943cbB1D03BcB82e0AC4565E2";
 init = async () => {
     hideElement(createItemForm);
     hideElement(userInfo);
