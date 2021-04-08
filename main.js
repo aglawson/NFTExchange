@@ -138,7 +138,6 @@ saveUserInfo = async () => {
 }
 
 createItem = async () => {
-    alert("calling create item function");
     if(createItemFile.files.length == 0){
         alert("Please select a file.");
         return;
