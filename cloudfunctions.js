@@ -62,7 +62,12 @@ Moralis.Cloud.define("getItems", async (request) => {
 
   const query = new Moralis.Query("ItemsForSale");
   query.notEqualTo("isSold", true);
-  query.select("uid", "tokenAddress", "tokenId", "askingPrice", "token.token_uri", "token.symbol", "token.owner_of", "token.id", "user.username", "user.avatar");
+  
+  if(request.user) {
+   	query.notContainedIn("token.owner_of", request.user.attributes.accounts); 
+  }
+  
+  query.select("uid", "tokenAddress", "tokenId", "askingPrice", "token.token_uri", "token.symbol", "token.owner_of", "user.username", "user.avatar");
   const queryResults = await query.find({useMasterKey:true});
   const results = [];
   
