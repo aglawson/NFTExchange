@@ -2,8 +2,9 @@ pragma solidity 0.7.2;
 
 import "../node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./Storage.sol";
+import "./Auction.sol";
 
-contract MarketContract is Storage{
+contract MarketContract is Storage {
     //AuctionItem[] public itemsForSale;
 
     event itemAdded(uint256 id, uint256 tokenId, address tokenAddress, uint256 askingPrice);
@@ -30,5 +31,10 @@ contract MarketContract is Storage{
         itemsForSale[id].seller.transfer(msg.value);
 
         emit itemSold(id, msg.sender, itemsForSale[id].askingPrice);
+    }
+
+    function removeItem(uint256 id) ItemExists(id) IsForSale(id) HasTransferApproval(itemsForSale[id].tokenAddress, itemsForSale[id].tokenId) public {
+        activeItems[itemsForSale[id].tokenAddress][itemsForSale[id].tokenId] = false;
+        itemsForSale.pop();
     }
 }
