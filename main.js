@@ -19,7 +19,7 @@ init = async () => {
     soldItemsSubscription.on("create", onItemSold);
 
     const itemsAddedQuery = new Moralis.Query('SoldItems');
-    const itemsAddedSubscription = await soldItemsQuery.subscribe();
+    const itemsAddedSubscription = await itemsAddedQuery.subscribe();
     itemsAddedSubscription.on("create", onItemAdded);
 }
 
@@ -207,17 +207,10 @@ loadUserItems = async () => {
 }
 
 loadItems = async () => {
-    user = await Moralis.User.current();
+    // user = await Moralis.User.current();
+    console.log("loadItems is called");
     const items = await Moralis.Cloud.run("getItems");
     items.forEach(item => {
-        if(user) {
-            if(user.attributes.accounts.includes(item.ownerOf)) {
-                const userItemListing = document.getElementById(`user-item-${item.tokenObjectId}`);
-                if(userItemListing) userItemListing.parentNode.removeChild(userItemListing);
-                getAndRenderItemData(item, renderUserItem);
-                return;
-            }
-        }
         getAndRenderItemData(item, renderItem);
     });
 }
