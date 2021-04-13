@@ -173,8 +173,9 @@ createItem = async () => {
             await marketplaceContract.methods.addItemToMarket(nftId, TOKEN_CONTRACT_ADDRESS, createItemPriceField.value).send({from: userAddress });
             break;
         case "2":
-            alert("Not yet supported!");
-            return;
+            //await ensureMarketplaceIsApproved(nftId, TOKEN_CONTRACT_ADDRESS);
+            //await marketplaceContract.methods.startAuction(nftId, TOKEN_CONTRACT_ADDRESS, createItemPriceField.value).send({from: userAddress});
+            break;
     }
 }
 
@@ -248,6 +249,7 @@ renderUserItem = async (item) => {
         await ensureMarketplaceIsApproved(item.tokenId, item.tokenAddress);
         await marketplaceContract.methods.addItemToMarket(item.tokenId, item.tokenAddress, userItem.getElementsByTagName("input")[0].value).send({from: user.get('ethAddress') });
     };
+    userItem.getElementsByTagName("button")[1].onclick = () => removeItemForSale(item);
 
     userItem.id = `user-item-${item.tokenObjectId}`
     userItems.appendChild(userItem);
@@ -271,6 +273,12 @@ renderItem = (item) => {
     itemsForSale.appendChild(itemForSale);
 }
 
+removeItemForSale = async (item) => {
+    // const itemForSale = marketplaceItemTemplate.cloneNode(true);
+  
+    // itemsForSale.removeChild(itemForSale); 
+    await marketplaceContract.methods.removeItem(item.tokenId);
+}
 
 getAndRenderItemData = (item, renderFunction) => {
     
