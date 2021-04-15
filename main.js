@@ -267,7 +267,7 @@ renderItem = (item) => {
     itemForSale.getElementsByTagName("h5")[0].innerText = item.name;
     itemForSale.getElementsByTagName("p")[0].innerText = item.description;
 
-    itemForSale.getElementsByTagName("button")[0].innerText = `Buy for ${item.askingPrice}`;
+    itemForSale.getElementsByTagName("button")[0].innerText = `Buy for ${item.askingPrice} Wei`;
     itemForSale.getElementsByTagName("button")[0].onclick = () => buyItem(item);
     itemForSale.id = `item-${item.uid}`;
     itemsForSale.appendChild(itemForSale);
