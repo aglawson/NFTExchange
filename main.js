@@ -249,7 +249,7 @@ renderUserItem = async (item) => {
         await ensureMarketplaceIsApproved(item.tokenId, item.tokenAddress);
         await marketplaceContract.methods.addItemToMarket(item.tokenId, item.tokenAddress, userItem.getElementsByTagName("input")[0].value).send({from: user.get('ethAddress') });
     };
-    userItem.getElementsByTagName("button")[1].onclick = () => removeItemForSale(item);
+    userItem.getElementsByTagName("button")[1].onclick = () => removeItemForSale(userItem);
 
     userItem.id = `user-item-${item.tokenObjectId}`
     userItems.appendChild(userItem);
