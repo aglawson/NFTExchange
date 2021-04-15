@@ -240,6 +240,8 @@ renderUserItem = async (item) => {
     userItem.getElementsByTagName("input")[0].value = item.askingPrice ?? 1;
     userItem.getElementsByTagName("input")[0].disabled = item.askingPrice > 0;
     userItem.getElementsByTagName("button")[0].disabled = item.askingPrice > 0;
+    
+    // To remove item from marketplace, need to create an event in smart contract and add an event listener + cloud function to Moralis server
     userItem.getElementsByTagName("button")[1].onclick = () => {
         userItem.parentNode.removeChild(userItem);   
     }
