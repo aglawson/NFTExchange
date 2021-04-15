@@ -1,5 +1,6 @@
 pragma solidity 0.7.2;
 
+// Returns transaction details (message sender, message data)
 contract Context {
 
     function _msgSender() internal view returns (address payable) {
@@ -12,6 +13,7 @@ contract Context {
     }
 }
 
+// Functionality and information regarding the ownership of the Token contract
 abstract contract Ownable is Context {
     address private _owner;
 
@@ -41,11 +43,9 @@ abstract contract Ownable is Context {
         _owner = address(0);
     }
 
-    
     function transferOwnership(address newOwner) public onlyOwner {
         _transferOwnership(newOwner);
     }
-
     
     function _transferOwnership(address newOwner) internal {
         require(newOwner != address(0), "Ownable: new owner is the zero address");
@@ -54,6 +54,7 @@ abstract contract Ownable is Context {
     }
 }
 
+// Stops certain contract functionalities when the contract is "paused"
 abstract contract Pausable is Ownable {
 
     event Paused(address account);
@@ -110,6 +111,7 @@ interface IERC20 {
     event Approval(address indexed owner, address indexed spender, uint256 value);
 }
 
+// Library to prevent math functions from being manipulated to compromise contract security
 library SafeMath {
 
     function add(uint256 a, uint256 b) internal pure returns (uint256) {
@@ -162,6 +164,7 @@ library SafeMath {
     }
 }
 
+// Basic functionality of ERC20 tokens 
 contract ERC20 is Context, IERC20 {
     using SafeMath for uint256;
 
@@ -257,6 +260,7 @@ contract ERC20 is Context, IERC20 {
     }
 }
 
+// Actual token contract
 contract Token is ERC20, Ownable {
     //uint8 public decimals = 18;
 
