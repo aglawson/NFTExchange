@@ -267,17 +267,29 @@ renderItem = (item) => {
     itemForSale.getElementsByTagName("h5")[0].innerText = item.name;
     itemForSale.getElementsByTagName("p")[0].innerText = item.description;
 
-    itemForSale.getElementsByTagName("button")[0].innerText = `Buy for ${item.askingPrice} Wei`;
+    itemForSale.getElementsByTagName("button")[0].innerText = `Buy for ${item.askingPrice}`;
     itemForSale.getElementsByTagName("button")[0].onclick = () => buyItem(item);
     itemForSale.id = `item-${item.uid}`;
     itemsForSale.appendChild(itemForSale);
 }
 
 removeItemForSale = async (item) => {
-    // const itemForSale = marketplaceItemTemplate.cloneNode(true);
-  
-    // itemsForSale.removeChild(itemForSale); 
-    await marketplaceContract.methods.removeItem(item.tokenId);
+    const listing = document.getElementById(`item-${item.attributes.uid}`);
+    if (listing){
+        listing.parentNode.removeChild(listing);
+    }
+    
+    // user = await Moralis.User.current();
+    // if (user){
+    //     // const params = {uid: `${item.attributes.uid}`};
+    //     // const soldItem = await Moralis.Cloud.run('getItem', params);
+
+    //         // const userItemListing = document.getElementById(`user-item-${item.tokenObjectId}`);
+    //         // if (userItemListing) userItemListing.parentNode.removeChild(userItemListing);
+          
+    //     }
+   
+    
 }
 
 getAndRenderItemData = (item, renderFunction) => {
@@ -359,6 +371,5 @@ const marketplaceItemTemplate = initTemplate("marketplaceItemTemplate");
 
 // Items for sale
 const itemsForSale = document.getElementById("itemsForSale");
-
 
 init();
