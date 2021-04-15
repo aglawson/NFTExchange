@@ -1,29 +1,5 @@
 pragma solidity 0.7.2;
 
-import "../node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
-import "../node_modules/@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
-
-contract Token is ERC20, Ownable, ERC20Burnable {
-    //uint8 public decimals = 18;
-
-    uint256 public initialSupply = 25000000 * 10 ** 18;
-
-    constructor () ERC20 ("ExchangeToken", "EXT") public {
-        _mint(msg.sender, initialSupply);
-    }
-
-    function burn(uint256 amount) public onlyOwner override {
-        transfer(0x000000000000000000000000000000000000dEaD, amount);
-    }
-
-    function mint(uint256 _amount) public onlyOwner {
-        _mint(msg.sender, _amount);
-    }
-}
-
-pragma solidity 0.7.2;
-
 contract Context {
 
     function _msgSender() internal view returns (address payable) {
@@ -36,12 +12,12 @@ contract Context {
     }
 }
 
-contract Ownable is Context {
+abstract contract Ownable is Context {
     address private _owner;
 
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
 
-    constructor () internal {
+    constructor () {
         address msgSender = _msgSender();
         _owner = msgSender;
         emit OwnershipTransferred(address(0), msgSender);
@@ -78,7 +54,7 @@ contract Ownable is Context {
     }
 }
 
-contract Pausable is Ownable {
+abstract contract Pausable is Ownable {
 
     event Paused(address account);
 
@@ -86,7 +62,7 @@ contract Pausable is Ownable {
 
     bool private _paused;
 
-    constructor () internal {
+    constructor () {
         _paused = false;
     }
 
@@ -194,30 +170,39 @@ contract ERC20 is Context, IERC20 {
     mapping (address => mapping (address => uint256)) private _allowances;
 
     uint256 private _totalSupply;
+    string public _name;
+    string public _symbol;
+    uint8 public _decimals;
 
-    function totalSupply() public view returns (uint256) {
+    constructor (string memory name_, string memory symbol_) public {
+        _name = name_;
+        _symbol = symbol_;
+        _decimals = 18;
+    }
+
+    function totalSupply() public view override returns (uint256) {
         return _totalSupply;
     }
 
-    function balanceOf(address account) public view returns (uint256) {
+    function balanceOf(address account) public view override returns (uint256) {
         return _balances[account];
     }
 
-    function transfer(address recipient, uint256 amount) public returns (bool) {
+    function transfer(address recipient, uint256 amount) public override returns (bool) {
         _transfer(_msgSender(), recipient, amount);
         return true;
     }
 
-    function allowance(address owner, address spender) public view returns (uint256) {
+    function allowance(address owner, address spender) public view override returns (uint256) {
         return _allowances[owner][spender];
     }
 
-    function approve(address spender, uint256 amount) public returns (bool) {
+    function approve(address spender, uint256 amount) public override returns (bool) {
         _approve(_msgSender(), spender, amount);
         return true;
     }
 
-    function transferFrom(address sender, address recipient, uint256 amount) public returns (bool) {
+    function transferFrom(address sender, address recipient, uint256 amount) public override returns (bool) {
         _transfer(sender, recipient, amount);
         _approve(sender, _msgSender(), _allowances[sender][_msgSender()].sub(amount, "ERC20: transfer amount exceeds allowance"));
         return true;
@@ -272,24 +257,22 @@ contract ERC20 is Context, IERC20 {
     }
 }
 
-contract ERC20Pausable is Ownable, Pausable, ERC20 {
-    function transfer(address to, uint256 value) public whenNotPaused returns (bool) {
-        return super.transfer(to, value);
+contract Token is ERC20, Ownable {
+    //uint8 public decimals = 18;
+
+    uint256 public initialSupply = 25000000 * 10 ** 18;
+
+    string constant public name = "NFTExchangeToken";
+    string constant public symbol = "NFTX";
+    constructor () ERC20 (name, symbol) public {
+        _mint(msg.sender, initialSupply);
     }
 
-    function transferFrom(address from, address to, uint256 value) public whenNotPaused returns (bool) {
-        return super.transferFrom(from, to, value);
+    function burn(uint256 amount) public onlyOwner {
+        _burnFrom(address(0), amount);
     }
 
-    function approve(address spender, uint256 value) public whenNotPaused returns (bool) {
-        return super.approve(spender, value);
-    }
-
-    function increaseAllowance(address spender, uint256 addedValue) public whenNotPaused returns (bool) {
-        return super.increaseAllowance(spender, addedValue);
-    }
-
-    function decreaseAllowance(address spender, uint256 subtractedValue) public whenNotPaused returns (bool) {
-        return super.decreaseAllowance(spender, subtractedValue);
+    function mint(uint256 _amount) public onlyOwner {
+        _mint(msg.sender, _amount);
     }
 }
