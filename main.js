@@ -279,15 +279,15 @@ removeItemForSale = async (item) => {
         listing.parentNode.removeChild(listing);
     }
     
-    // user = await Moralis.User.current();
-    // if (user){
-    //     // const params = {uid: `${item.attributes.uid}`};
-    //     // const soldItem = await Moralis.Cloud.run('getItem', params);
+    user = await Moralis.User.current();
+    if (user){
+        const params = {uid: `${item.attributes.uid}`};
+        const soldItem = await Moralis.Cloud.run('getItem', params);
 
-    //         // const userItemListing = document.getElementById(`user-item-${item.tokenObjectId}`);
-    //         // if (userItemListing) userItemListing.parentNode.removeChild(userItemListing);
+            const userItemListing = document.getElementById(`user-item-${item.tokenObjectId}`);
+            if (userItemListing) userItemListing.parentNode.removeChild(userItemListing);
           
-    //     }
+        }
    
     
 }
