@@ -240,6 +240,7 @@ renderUserItem = async (item) => {
     userItem.getElementsByTagName("input")[0].value = item.askingPrice ?? 1;
     userItem.getElementsByTagName("input")[0].disabled = item.askingPrice > 0;
     userItem.getElementsByTagName("button")[0].disabled = item.askingPrice > 0;
+    userItem.getElementsByTagName("button")[1].onclick = async () => removeItemForSale(item);
     userItem.getElementsByTagName("button")[0].onclick = async () => {
         user = await Moralis.User.current();
         if (!user){
@@ -249,7 +250,6 @@ renderUserItem = async (item) => {
         await ensureMarketplaceIsApproved(item.tokenId, item.tokenAddress);
         await marketplaceContract.methods.addItemToMarket(item.tokenId, item.tokenAddress, userItem.getElementsByTagName("input")[0].value).send({from: user.get('ethAddress') });
     };
-    userItem.getElementsByTagName("button")[1].onclick = () => removeItemForSale(userItemListing);
 
     userItem.id = `user-item-${item.tokenObjectId}`
     userItems.appendChild(userItem);
