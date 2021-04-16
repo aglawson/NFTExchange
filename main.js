@@ -246,7 +246,8 @@ renderUserItem = async (item) => {
     // To remove item from marketplace, need to create an event in smart contract and add an event listener + cloud function to Moralis server
     userItem.getElementsByTagName("button")[1].onclick = () => {
         userItem.parentNode.removeChild(userItem);
-        marketplaceContract.methods.removeItem(item.token_id).send({from: userAddress});
+        item.destroy();
+        //marketplaceContract.methods.removeItem(item.token_id).send({from: userAddress});
     }
     userItem.getElementsByTagName("button")[0].onclick = async () => {
         user = await Moralis.User.current();
