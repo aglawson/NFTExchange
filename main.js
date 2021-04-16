@@ -230,6 +230,7 @@ initTemplate = (id) => {
 renderUserItem = async (item) => {
     const userItemListing = document.getElementById(`user-item-${item.tokenObjectId}`);
     if (userItemListing) return;
+    user = await Moralis.User.current();
     const userAddress = user.get('ethAddress');
 
     const userItem = userItemTemplate.cloneNode(true);
