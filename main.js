@@ -230,6 +230,7 @@ initTemplate = (id) => {
 renderUserItem = async (item) => {
     const userItemListing = document.getElementById(`user-item-${item.tokenObjectId}`);
     if (userItemListing) return;
+    const userAddress = user.get('ethAddress');
 
     const userItem = userItemTemplate.cloneNode(true);
     userItem.getElementsByTagName("img")[0].src = item.image;
@@ -244,7 +245,7 @@ renderUserItem = async (item) => {
     // To remove item from marketplace, need to create an event in smart contract and add an event listener + cloud function to Moralis server
     userItem.getElementsByTagName("button")[1].onclick = () => {
         userItem.parentNode.removeChild(userItem);
-        marketplaceContract.methods.removeItem(item.tokenObjectId);
+        marketplaceContract.methods.removeItem(item.tokenObjectId).send({from: userAddress});
     }
     userItem.getElementsByTagName("button")[0].onclick = async () => {
         user = await Moralis.User.current();
