@@ -260,10 +260,11 @@ renderUserItem = async (item) => {
     userItem.getElementsByTagName("button")[1].onclick = () => {
         userItem.parentNode.removeChild(userItem);
         myObject.destroy().then((myObject) => {
-            alert('Object destroyed');
-        }, (error) => {
-            alert('Error: object not destroyed');
-       });
+  // The object was deleted from the Moralis Cloud.
+}, (error) => {
+  // The delete failed.
+  // error is a Moralis.Error with an error code and message.
+});
     }
 }
 
