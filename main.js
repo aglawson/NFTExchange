@@ -259,7 +259,11 @@ renderUserItem = async (item) => {
     const myObject = await Moralis.Cloud.run('getItem', item.tokenObjectId);    
     userItem.getElementsByTagName("button")[1].onclick = () => {
         userItem.parentNode.removeChild(userItem);
-        myObject.destroy();
+        myObject.destroy().then((myObject) => {
+            alert('Object destroyed');
+        }, (error) => {
+            alert('Error: object not destroyed');
+       });
     }
 }
 
