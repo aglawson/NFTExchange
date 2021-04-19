@@ -244,9 +244,9 @@ renderUserItem = async (item) => {
     userItem.getElementsByTagName("button")[0].disabled = item.askingPrice > 0;
     
     const object = await Moralis.Cloud.run('getItem', item.name);    
-    userItem.getElementsByTagName("button")[1].onclick = () => {
+    userItem.getElementsByTagName("button")[1].onclick = async () => {
         userItem.parentNode.removeChild(userItem);
-        object.destroy();
+        await object.destroy();
     }
     userItem.getElementsByTagName("button")[0].onclick = async () => {
         user = await Moralis.User.current();
