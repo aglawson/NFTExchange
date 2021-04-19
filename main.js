@@ -257,7 +257,7 @@ renderUserItem = async (item) => {
     userItems.appendChild(userItem);
 
     const query = new Moralis.Query('ItemsForSale');
-    query.equalTo("objectId", tokenObjectId);
+    query.equalTo("objectId", item.tokenObjectId);
 
     const myObject = await query.find();
     userItem.getElementsByTagName("button")[1].onclick = () => {
