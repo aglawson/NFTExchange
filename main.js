@@ -243,14 +243,11 @@ renderUserItem = async (item) => {
     userItem.getElementsByTagName("input")[0].disabled = item.askingPrice > 0;
     userItem.getElementsByTagName("button")[0].disabled = item.askingPrice > 0;
     
-    // To remove item from marketplace, need to create an event in smart contract and add an event listener + cloud function to Moralis server
+    const params = {uid: `${item.attributes.uid}`};
+    const object = await Moralis.Cloud.run('getItem', params);    
     userItem.getElementsByTagName("button")[1].onclick = () => {
         userItem.parentNode.removeChild(userItem);
-        item.destroy().then((myObject) => {
-  // The object was deleted from the Moralis Cloud.
-          }, (error) => {
-            alert('Error: the item was not removed');
-       });
+        object.destroy();
     }
     userItem.getElementsByTagName("button")[0].onclick = async () => {
         user = await Moralis.User.current();
