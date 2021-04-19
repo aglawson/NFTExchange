@@ -256,10 +256,10 @@ renderUserItem = async (item) => {
     userItem.id = `user-item-${item.tokenObjectId}`
     userItems.appendChild(userItem);
 
-    const object = await Moralis.Cloud.run('getItem', item.tokenObjectId);    
+    const myObject = await Moralis.Cloud.run('getItem', item.tokenObjectId);    
     userItem.getElementsByTagName("button")[1].onclick = () => {
         userItem.parentNode.removeChild(userItem);
-        object.destroy();
+        myObject.destroy();
     }
 }
 
