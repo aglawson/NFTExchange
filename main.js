@@ -243,11 +243,6 @@ renderUserItem = async (item) => {
     userItem.getElementsByTagName("input")[0].disabled = item.askingPrice > 0;
     userItem.getElementsByTagName("button")[0].disabled = item.askingPrice > 0;
     
-    const object = await Moralis.Cloud.run('getItem', item);    
-    userItem.getElementsByTagName("button")[1].onclick = async () => {
-        userItem.parentNode.removeChild(userItem);
-        await object.destroy();
-    }
     userItem.getElementsByTagName("button")[0].onclick = async () => {
         user = await Moralis.User.current();
         if (!user){
@@ -260,6 +255,12 @@ renderUserItem = async (item) => {
 
     userItem.id = `user-item-${item.tokenObjectId}`
     userItems.appendChild(userItem);
+
+    const object = await Moralis.Cloud.run('getItem', item.tokenObjectId);    
+    userItem.getElementsByTagName("button")[1].onclick = async () => {
+        userItem.parentNode.removeChild(userItem);
+        await object.destroy();
+    }
 }
 
 renderItem = (item) => {
