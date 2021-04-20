@@ -256,12 +256,10 @@ renderUserItem = async (item) => {
     userItem.id = `user-item-${item.tokenObjectId}`
     userItems.appendChild(userItem);
 
-    const query = new Moralis.Query('ItemsForSale');
-    query.equalTo("objectId", item.tokenObjectId);
 
-    const myObject = await query.find();
+    const myObject = await Moralis.Cloud.run('getItem', item.attributes.id);
     userItem.getElementsByTagName("button")[1].onclick = () => {
-        console.log(myObject);
+           console.log(myObject);
 //         userItem.parentNode.removeChild(userItem);
 //         myObject.unset("askingPrice");
     }
