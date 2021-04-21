@@ -173,8 +173,8 @@ createItem = async () => {
             await marketplaceContract.methods.addItemToMarket(nftId, TOKEN_CONTRACT_ADDRESS, createItemPriceField.value).send({from: userAddress });
             break;
         case "2":
-            //await ensureMarketplaceIsApproved(nftId, TOKEN_CONTRACT_ADDRESS);
-            //await marketplaceContract.methods.startAuction(nftId, TOKEN_CONTRACT_ADDRESS, createItemPriceField.value).send({from: userAddress});
+            await ensureMarketplaceIsApproved(nftId, TOKEN_CONTRACT_ADDRESS);
+            await marketplaceContract.methods.startAuction(nftId, TOKEN_CONTRACT_ADDRESS, createItemPriceField.value).send({from: userAddress});
             break;
     }
 }
