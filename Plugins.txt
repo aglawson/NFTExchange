@@ -1,0 +1,116 @@
+Sync and Watch Contract Events
+Sync and Watch Contract Events, all the data will be filled in the Collection named after the tableName provided and will be parsed with the abi provided.
+description : When an item is added to the marketplace
+topic : itemAdded(uint256, uint256, address, uint256)
+abi : Hide
+{
+  "anonymous": false,
+  "inputs": [
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "id",
+      "type": "uint256"
+    },
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "tokenId",
+      "type": "uint256"
+    },
+    {
+      "indexed": false,
+      "internalType": "address",
+      "name": "tokenAddress",
+      "type": "address"
+    },
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "askingPrice",
+      "type": "uint256"
+    }
+  ],
+  "name": "itemAdded",
+  "type": "event"
+}
+address : 0x43B0e03af9F206a0d463E14c2fbBd013524D158B
+tableName : ItemsForSale
+
+Sync and Watch Contract Events
+Sync and Watch Contract Events, all the data will be filled in the Collection named after the tableName provided and will be parsed with the abi provided.
+description : When an item is sold
+topic : itemSold(uint256, address, uint256)
+abi : Hide
+{
+  "anonymous": false,
+  "inputs": [
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "id",
+      "type": "uint256"
+    },
+    {
+      "indexed": false,
+      "internalType": "address",
+      "name": "buyer",
+      "type": "address"
+    },
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "askingPrice",
+      "type": "uint256"
+    }
+  ],
+  "name": "itemSold",
+  "type": "event"
+}
+address : 0x43B0e03af9F206a0d463E14c2fbBd013524D158B
+tableName : SoldItems
+
+Sync and Watch Contract Events
+Sync and Watch Contract Events, all the data will be filled in the Collection named after the tableName provided and will be parsed with the abi provided.
+description : When an item is put up for auction
+topic : itemAuctionStarted(uint256, uint256, address, uint256, uint)
+abi : Hide
+{
+  "anonymous": false,
+  "inputs": [
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "id",
+      "type": "uint256"
+    },
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "tokenId",
+      "type": "uint256"
+    },
+    {
+      "indexed": false,
+      "internalType": "address",
+      "name": "tokenAddress",
+      "type": "address"
+    },
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "startingPrice",
+      "type": "uint256"
+    },
+    {
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "startTime",
+      "type": "uint256"
+    }
+  ],
+  "name": "itemAuctionStarted",
+  "type": "event"
+}
+address : 0x43B0e03af9F206a0d463E14c2fbBd013524D158B
+tableName : ItemsForAuction
