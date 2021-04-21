@@ -174,8 +174,9 @@ createItem = async () => {
             break;
         case "2":
             await ensureMarketplaceIsApproved(nftId, TOKEN_CONTRACT_ADDRESS);
-            await marketplaceContract.methods.startAuction(nftId, TOKEN_CONTRACT_ADDRESS, createItemPriceField.value).send({from: userAddress});
+            const auctionReceipt = await marketplaceContract.methods.startAuction(nftId, TOKEN_CONTRACT_ADDRESS, createItemPriceField.value).send({from: userAddress});
             alert('Auction started!');
+            console.log(auctionReceipt);
             break;
     }
 }
