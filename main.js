@@ -257,7 +257,7 @@ renderUserItem = async (item) => {
     userItems.appendChild(userItem);
 
 
-    const myObject = await Moralis.Cloud.run('getItem', item.id);
+    const myObject = await Moralis.Cloud.run('getItem', item.attributes.uid);
     userItem.getElementsByTagName("button")[1].onclick = () => {
            console.log(myObject);
 //         userItem.parentNode.removeChild(userItem);
