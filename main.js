@@ -1,5 +1,5 @@
-Moralis.initialize("0DVS9XUGPhxOb4QzXLYt6vY0h5h9ZUMmUhaT6QI5");
-Moralis.serverURL = 'https://kkshpibweizm.moralis.io:2053/server'
+Moralis.initialize("xgS2quJKCMxYBQ4DVgAg12Qad7nMpyAo0gXsemsT");
+Moralis.serverURL = 'https://p1zzzatztkxr.moralis.io:2053/server'
 const TOKEN_CONTRACT_ADDRESS = "0x96f9e48cd5978c857dDACB759667C2197D54cAe8";
 const MARKETPLACE_CONTRACT_ADDRESS = "0x43B0e03af9F206a0d463E14c2fbBd013524D158B";
 const STORAGE_CONTRACT_ADDRESS = "0x1218353a6b9ae2a943cbB1D03BcB82e0AC4565E2";
