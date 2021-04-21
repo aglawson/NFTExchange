@@ -2,13 +2,14 @@ pragma solidity 0.7.2;
 
 import "../node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./Storage.sol";
-import "./Auction.sol";
 
 contract MarketContract is Storage {
-    //AuctionItem[] public itemsForSale;
+
+    address private _owner;
 
     event itemAdded(uint256 id, uint256 tokenId, address tokenAddress, uint256 askingPrice);
     event itemSold(uint256 id, address buyer, uint256 askingPrice);
+    event itemAuctionStarted(uint256 id, uint256 tokenId, address tokenAddress, uint256 startingPrice, uint startTime);
 
     function addItemToMarket(uint256 tokenId, address tokenAddress, uint256 askingPrice) OnlyItemOwner(tokenAddress, tokenId) HasTransferApproval(tokenAddress, tokenId) external returns (uint256) {
         require(activeItems[tokenAddress][tokenId] == false, "Item is already on sale.");
@@ -35,6 +36,18 @@ contract MarketContract is Storage {
 
     function removeItem(uint256 id) ItemExists(id) IsForSale(id) HasTransferApproval(itemsForSale[id].tokenAddress, itemsForSale[id].tokenId) public {
         activeItems[itemsForSale[id].tokenAddress][itemsForSale[id].tokenId] = false;
-        itemsForSale.pop();
+        delete activeItems[itemsForSale[id].tokenAddress][itemsForSale[id].tokenId];
     }
-}
+
+    function startAuction(uint256 tokenId, address tokenAddress, uint256 askingPrice) OnlyItemOwner(tokenAddress, tokenId) HasTransferApproval(tokenAddress, tokenId) external returns (uint256) {
+        require(activeItems[tokenAddress][tokenId] == false, "Item is already on sale.");
+        _uintStorage["newItemId"] = itemsForSale.length;
+        itemsForSale.push(AuctionItem(_uintStorage["newItemId"], tokenAddress, tokenId, payable(msg.sender), askingPrice, false));
+        activeItems[tokenAddress][tokenId] = true;
+        uint startTime = block.timestamp;
+
+        assert(itemsForSale[_uintStorage["newItemId"]].id == _uintStorage["newItemId"]);
+        emit itemAdded(_uintStorage["newItemId"], tokenId, tokenAddress, askingPrice);
+        emit itemAuctionStarted(_uintStorage["newItemId"], tokenId, tokenAddress, askingPrice, startTime);
+        return _uintStorage["newItemId"];
+    }
