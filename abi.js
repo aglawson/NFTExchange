@@ -530,6 +530,12 @@ var tokenContractAbi = [
           "internalType": "uint256",
           "name": "startTime",
           "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "endTime",
+          "type": "uint256"
         }
       ],
       "name": "itemAuctionStarted",
@@ -638,6 +644,16 @@ var tokenContractAbi = [
           "internalType": "bool",
           "name": "isSold",
           "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "startTime",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "endTime",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
