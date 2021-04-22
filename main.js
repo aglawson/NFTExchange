@@ -263,7 +263,7 @@ renderUserItem = async (item) => {
     userItem.getElementsByTagName("button")[1].onclick = () => {
         console.log(myObject);
         userItem.parentNode.removeChild(userItem);
-        myObject.unset("askingPrice");
+        myObject.destroy();
     }
 }
 
@@ -334,6 +334,8 @@ buyItem = async (item) => {
     } 
     await marketplaceContract.methods.buyItem(item.uid).send({from: user.get('ethAddress'), value: item.askingPrice});
 }
+
+
 
 hideElement = (element) => element.style.display = "none";
 showElement = (element) => element.style.display = "block";
