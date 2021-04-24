@@ -265,6 +265,16 @@ renderUserItem = async (item) => {
         userItem.parentNode.removeChild(userItem);
         myObject.destroy();
     }
+    
+    userItem.getElementsByTagName("button")[2].disabled = item.askingPrice > 0;
+    userItem.getElementsByTagName("button")[2].onclick = async () => {
+        user = await Moralis.User.current();
+        if(!user){
+            login();
+            return;
+        }
+        await ensureMarketplaceIsApproved(item.tokenId, item.tokenAddress);
+        await marketplaceContract.methods.startAuction(item.tokenId, item.tokenAddress, userItem.getElementsByTagName("input")[0].value).send({from: user.get('ethAddress') });
 }
 
 renderItem = (item) => {
