@@ -292,6 +292,11 @@ renderItem = (item) => {
     itemForSale.getElementsByTagName("button")[0].innerText = `Buy for ${item.askingPrice} Wei`;
     itemForSale.getElementsByTagName("button")[0].onclick = () => buyItem(item);
     itemForSale.id = `item-${item.uid}`;
+    itemForSale.getElementsByTagName("button")[1].innerText = `Bid ${item.askingPrice} Wei`;
+    
+    //add bidding functionality here
+    //itemForSale.getElementsByTagName("button")[1].onclick ... 
+    
     itemsForSale.appendChild(itemForSale);
 }
 
