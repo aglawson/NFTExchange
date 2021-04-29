@@ -1,5 +1,6 @@
 # NFTExchange
 
+Exchange is currently out of order due to a Moralis update that broke the application. We are working on this!
 https://aglawson.github.io/NFTExchange/
 
 Currently deployed on Ropsten Testnet.
