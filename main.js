@@ -275,6 +275,7 @@ renderUserItem = async (item) => {
         }
         await ensureMarketplaceIsApproved(item.tokenId, item.tokenAddress);
         await marketplaceContract.methods.startAuction(item.tokenId, item.tokenAddress, userItem.getElementsByTagName("input")[0].value).send({from: user.get('ethAddress') });
+    }
 }
 
 renderItem = (item) => {
